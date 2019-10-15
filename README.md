@@ -1,4 +1,7 @@
-# vuetify-todo
+# Task Manager  
+
+[Vuetify](https://vuetifyjs.com/en/) front end for [Task Manager API](https://github.com/brute-force/task-manager).  
+This uses [Vuex](https://vuex.vuejs.org/) for state management and [Vue Router](https://router.vuejs.org/) for routing and navigation.  
 
 ## Project setup
 ```
