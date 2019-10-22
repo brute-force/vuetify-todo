@@ -22,10 +22,10 @@
               >
                 <v-toolbar-title>Login</v-toolbar-title>
               </v-toolbar>
-              <v-card-text>
-                <v-form
-                  ref="form"
-                >
+              <v-form
+                ref="form"
+              >
+                <v-card-text>
                   <v-text-field
                     v-model="email"
                     label="E-Mail"
@@ -45,31 +45,31 @@
                     :type="showPassword ? 'text' : 'password'"
                     @click:append="showPassword = !showPassword"
                   />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  text
-                  color="googs white--text"
-                  router
-                  to="/register"
-                >
-                  <div class="mx-3">
-                    Register
-                  </div>
-                </v-btn>
-                <v-spacer />
-                <v-btn
-                  rounded
-                  color="googs white--text"
-                  :loading="isLoading"
-                  @click.prevent="login"
-                >
-                  <div class="mx-3">
-                    Login
-                  </div>
-                </v-btn>
-              </v-card-actions>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    text
+                    color="googs white--text"
+                    router
+                    to="/register"
+                  >
+                    <div class="mx-3">
+                      Register
+                    </div>
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn
+                    rounded
+                    color="googs white--text"
+                    :loading="isLoading"
+                    @click.prevent="login"
+                  >
+                    <div class="mx-3">
+                      Login
+                    </div>
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
             </v-card>
           </v-col>
         </v-row>
