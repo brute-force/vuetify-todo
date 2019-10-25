@@ -152,7 +152,7 @@
           </v-layout>
           <DashboardItem
             v-for="task in allTasks"
-            :key="task.title"
+            :key="task._id"
             :task="task"
           />
         </v-container>
@@ -176,7 +176,7 @@ export default {
   mixins: [status],
   data () {
     return {
-      // sortBy: '',
+      // sortBy: 'status',
       // sortDirection: 'ascending'
       sortBy: '',
       sortDirection: ''
@@ -201,7 +201,7 @@ export default {
         this.sortDirection = this.sortDirection === 'ascending' ? 'descending' : 'ascending';
       } else {
         // otherwise sort order is ascending
-        this.sortDirection = 'ascending';
+        this.sortDirection = 'descending';
       }
 
       this.sortBy = prop;
