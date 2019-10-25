@@ -48,9 +48,9 @@ export default new Vuex.Store({
         const propB = status.methods.getStatus(b.isCompleted, b.dateDue);
 
         if (propA < propB) {
-          return -1;
-        } else if (propA > propB) {
           return 1;
+        } else if (propA > propB) {
+          return -1;
         } else {
           const momentA = moment(a.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
           const momentB = moment(b.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
