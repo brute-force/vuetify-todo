@@ -27,7 +27,7 @@
           size="20"
           class="mr-1 grey lighten-2"
         >
-          <img :src="`/img/${task.owner._id}.jpg`">
+          <img :src="`http://localhost:3000/users/${task.owner._id}/avatar`">
         </v-avatar>
 
         {{ task.owner.name }}

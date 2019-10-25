@@ -28,7 +28,7 @@
                     size="36"
                     class="grey lighten-2"
                   >
-                    <img :src="`/img/${person._id}.jpg`">
+                    <img :src="`http://localhost:3000/users/${person._id}/avatar`">
                   </v-avatar>
                 </v-responsive>
                 <v-card-text>
