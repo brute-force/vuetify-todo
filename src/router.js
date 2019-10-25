@@ -31,8 +31,8 @@ const router = new Router({
       }
     },
     {
-      path: '/tasks',
-      name: 'Tasks',
+      path: '/mytasks',
+      name: 'My Tasks',
       component: Tasks,
       meta: {
         requiresAuth: true

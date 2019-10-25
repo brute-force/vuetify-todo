@@ -132,8 +132,8 @@ export default {
         },
         {
           icon: 'mdi-folder',
-          text: 'Tasks',
-          route: '/tasks'
+          text: 'My Tasks',
+          route: '/mytasks'
         },
         {
           icon: 'mdi-account',
