@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+import { status } from './mixins/status';
 
 Vue.use(Vuex);
 
@@ -34,6 +35,35 @@ export default new Vuex.Store({
     },
     createTask (state, task) {
       state.myTasks.push(task);
+
+      task.owner = {
+        _id: state.user.id,
+        name: state.user.name,
+        email: state.user.email
+      };
+
+      state.tasks.push(task);
+      state.tasks.sort((a, b) => {
+        const propA = status.methods.getStatus(a.isCompleted, a.dateDue);
+        const propB = status.methods.getStatus(b.isCompleted, b.dateDue);
+
+        if (propA < propB) {
+          return -1;
+        } else if (propA > propB) {
+          return 1;
+        } else {
+          const momentA = moment(a.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+          const momentB = moment(b.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+          if (momentA.isBefore(momentB)) {
+            return -1;
+          } else if (momentA.isAfter(momentB)) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      });
     },
     deleteTask (state, id) {
       const index = state.myTasks.findIndex((task) => task._id === id);
@@ -200,24 +230,7 @@ export default new Vuex.Store({
     token: state => state.token,
     user: state => state.user,
     allTasks: state => state.tasks,
-    myTasks: state => state.myTasks.sort((a, b) => {
-      if (a.isCompleted < b.isCompleted) {
-        return -1;
-      } else if (a.isCompleted > b.isCompleted) {
-        return 1;
-      } else {
-        const momentA = moment(a.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-        const momentB = moment(b.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-
-        if (momentA.isBefore(momentB)) {
-          return -1;
-        } else if (momentA.isAfter(momentB)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-    }),
+    myTasks: state => state.myTasks,
     snackbar: state => state.snackbar
     // tasksByUserId: state => id => state.tasks.filter((task) => task.owner._id === id),
     // myTasks: state => state.tasks.filter((task) => task.owner._id === state.user.id)
