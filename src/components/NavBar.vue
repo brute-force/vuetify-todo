@@ -61,16 +61,11 @@
         align-center
       >
         <v-flex class="mt-5">
-          <v-avatar
-            size="72"
-            class="grey lighten-2"
-          >
-            <img :src="`/img/${this.$store.getters.user.id}.jpg`">
-          </v-avatar>
+          <UploadAvatar />
         </v-flex>
         <v-flex class="mt-1">
           <p class="white--text subheading mt-1">
-            {{ this.$store.getters.user.name }}
+            {{ displayName }}
           </p>
         </v-flex>
         <v-flex class="mt-4 mb-3">
@@ -113,12 +108,14 @@
 <script>
 import Snackbar from '@/components/Snackbar';
 import CreateOrUpdateTask from '@/components/CreateOrUpdateTask';
+import UploadAvatar from '@/components/UploadAvatar';
 import { mapActions } from 'vuex';
 
 export default {
   name: 'NavBar',
   components: {
     CreateOrUpdateTask,
+    UploadAvatar,
     Snackbar
   },
   data () {
@@ -142,6 +139,11 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    displayName () {
+      return this.$store.getters.user.name;
+    }
   },
   methods: {
     doLogout () {
