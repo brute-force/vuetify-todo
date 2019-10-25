@@ -12,7 +12,7 @@
             focusable
           >
             <Task
-              v-for="task in myTasks"
+              v-for="task in sortedTasks"
               :key="task._id"
               :task="task"
             />
