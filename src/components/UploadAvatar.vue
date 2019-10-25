@@ -71,13 +71,7 @@ export default {
   methods: {
     imageSelect () {
       if (this.file) {
-        console.log(this.file);
-
         let reader = new FileReader();
-
-        // reader.onload = () => {
-        // };
-
         reader.readAsDataURL(this.file);
       }
     },
