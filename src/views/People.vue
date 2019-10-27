@@ -12,7 +12,7 @@
             wrap
           >
             <v-flex
-              v-for="person in people"
+              v-for="(person, index) in people"
               :key="person.name"
               xs12
               sm6
@@ -28,7 +28,7 @@
                     size="36"
                     class="grey lighten-2"
                   >
-                    <img :src="`http://localhost:3000/users/${person._id}/avatar`">
+                    <img :src="avatarPaths[index]">
                   </v-avatar>
                 </v-responsive>
                 <v-card-text>
@@ -59,6 +59,13 @@ export default {
     return {
       people: []
     };
+  },
+  computed: {
+    avatarPaths () {
+      return this.people.map((person) => {
+        return `${process.env.VUE_APP_API_BASE_URL}/users/${person._id}/avatar`;
+      });
+    }
   },
   created () {
     this.$http.get('/users/all')

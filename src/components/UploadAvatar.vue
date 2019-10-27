@@ -60,7 +60,7 @@ export default {
   data () {
     return {
       file: null,
-      avatarPath: `http://localhost:3000/users/${this.$store.getters.user.id}/avatar`,
+      avatarPath: `${process.env.VUE_APP_API_BASE_URL}/users/${this.$store.getters.user.id}/avatar`,
       rules: [
         value => !value || value.size < 200000 || 'Avatar size should be less than 200 KB!'
       ],

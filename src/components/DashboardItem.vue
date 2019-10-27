@@ -27,7 +27,7 @@
           size="20"
           class="mr-1 grey lighten-2"
         >
-          <img :src="`http://localhost:3000/users/${task.owner._id}/avatar`">
+          <img :src="avatarPath">
         </v-avatar>
 
         {{ task.owner.name }}
@@ -79,6 +79,9 @@ export default {
     },
     dateDueFormatted () {
       return moment(this.task.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('ddd, MMM Do YYYY');
+    },
+    avatarPath () {
+      return `${process.env.VUE_APP_API_BASE_URL}/users/${this.task.owner._id}/avatar`;
     }
   }
 };
