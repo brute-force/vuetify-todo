@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 Vue.config.productionTip = false;
 
 const api = axios.create({
-  baseURL: 'http://192.168.1.62:3000'
+  baseURL: process.env.VUE_APP_API_BASE_URL
 });
 
 api.interceptors.response.use((response) => {
