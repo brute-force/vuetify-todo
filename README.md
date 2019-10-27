@@ -3,6 +3,8 @@
 [Vuetify](https://vuetifyjs.com/en/) front end for [Task Manager API](https://github.com/brute-force/task-manager).  
 This uses [Vuex](https://vuex.vuejs.org/) for state management and [Vue Router](https://router.vuejs.org/) for routing and navigation.  
 
+deployed app on AWS Elastic Beanstalk: [http://task-man.us-east-1.elasticbeanstalk.com/](http://task-man.us-east-1.elasticbeanstalk.com/)
+
 ## Project setup
 ```
 npm install
