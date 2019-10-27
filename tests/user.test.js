@@ -13,7 +13,14 @@ describe('user tests', function () {
 
   before(async function () {
     this.timeout(5000);
-    browser = await puppeteer.launch({ headless: true, defaultViewport: { width: 1920, height: 1080 } });
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox'],
+      defaultViewport: {
+        width: 1920,
+        height: 1080
+      }
+    });
     // browser = await puppeteer.launch();
   });
 
