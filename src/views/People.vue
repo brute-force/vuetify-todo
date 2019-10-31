@@ -63,7 +63,7 @@ export default {
   computed: {
     avatarPaths () {
       return this.people.map((person) => {
-        return `${process.env.VUE_APP_API_BASE_URL}/users/${person._id}/avatar`;
+        return `${process.env.VUE_APP_AWS_S3_AVATAR_HOST}${person.avatarPath}`;
       });
     }
   },

@@ -81,7 +81,7 @@ export default {
       return moment(this.task.dateDue, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('ddd, MMM Do YYYY');
     },
     avatarPath () {
-      return `${process.env.VUE_APP_API_BASE_URL}/users/${this.task.owner._id}/avatar`;
+      return `${process.env.VUE_APP_AWS_S3_AVATAR_HOST}${this.task.owner.avatarPath}`;
     }
   }
 };
