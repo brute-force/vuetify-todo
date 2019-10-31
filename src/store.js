@@ -7,6 +7,10 @@ import { status } from './mixins/status';
 
 Vue.use(Vuex);
 
+// set secure to true when deploying to an https environment
+// const opts = { expires: 1, samesite: 'Strict', secure: true };
+const optsCookie = { expires: 1, samesite: 'Strict' };
+
 export default new Vuex.Store({
   state: {
     token: Cookies.get('token') || '',
@@ -79,6 +83,10 @@ export default new Vuex.Store({
         state.myTasks.splice(index, 1, task);
       }
     },
+    updateAvatarPath (state, avatarPath) {
+      state.user.avatarPath = avatarPath;
+      Cookies.set('user', JSON.stringify(state.user), optsCookie);
+    },
     updateSnackbar (state, snackbar) {
       state.snackbar = snackbar;
     }
@@ -115,17 +123,16 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         this.$http.post('/users/login', { email: user.email, password: user.password })
           .then((res) => {
-            const { token, user: { name, _id } } = res.data;
+            const { token, user: { name, _id, avatarPath } } = res.data;
             user.name = name;
             user.id = _id;
+            user.avatarPath = avatarPath;
             delete user.password;
 
-            // set secure to true when deploying to an https environment
-            // const opts = { expires: 1, samesite: 'Strict', secure: true };
-            const opts = { expires: 1, samesite: 'Strict' };
+            // const opts = { expires: 1, samesite: 'Strict' };
 
-            Cookies.set('token', token, opts);
-            Cookies.set('user', JSON.stringify(user), opts);
+            Cookies.set('token', token, optsCookie);
+            Cookies.set('user', JSON.stringify(user), optsCookie);
 
             this.$http.defaults.headers.common.Authorization = token;
 
@@ -220,6 +227,13 @@ export default new Vuex.Store({
           .catch((err) => {
             reject(err);
           });
+      });
+    },
+    updateAvatarPath ({ commit }, avatarPath) {
+      return new Promise((resolve, reject) => {
+        commit('updateAvatarPath', avatarPath);
+
+        resolve();
       });
     },
     updateSnackbar ({ commit }, snackbar) {
