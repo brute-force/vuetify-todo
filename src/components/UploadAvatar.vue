@@ -11,7 +11,7 @@
         class="grey lighten-2"
         v-on="on"
       >
-        <img :src="avatarPath">
+        <img :src="avatarUri">
       </v-avatar>
     </template>
     <v-card>
@@ -55,18 +55,23 @@
 
 <script>
 import { mapActions } from 'vuex';
+import request from 'axios';
 
 export default {
   data () {
     return {
       file: null,
-      avatarPath: `${process.env.VUE_APP_API_BASE_URL}/users/${this.$store.getters.user.id}/avatar`,
       rules: [
         value => !value || value.size < 200000 || 'Avatar size should be less than 200 KB!'
       ],
       isLoading: false,
       doShow: false
     };
+  },
+  computed: {
+    avatarUri () {
+      return `${process.env.VUE_APP_AWS_S3_AVATAR_HOST}${this.$store.getters.user.avatarPath}`;
+    }
   },
   methods: {
     imageSelect () {
@@ -75,31 +80,36 @@ export default {
         reader.readAsDataURL(this.file);
       }
     },
-    submit () {
+    async submit () {
       if (this.$refs.form.validate()) {
         this.isLoading = true;
 
-        const formData = new FormData();
-        formData.append('avatar', this.file);
+        // get s3 signed url
+        const resS3GetSignedUrl = await this.$http.post('/users/upload', { 'Content-Type': this.file.type });
+        const { key, url } = resS3GetSignedUrl.data;
 
-        const headers = {
+        // upload avatar to s3
+        await request.put(url, this.file, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': this.file.type
           }
-        };
+        });
 
-        this.$http.post('/users/me/avatar', formData, headers)
-          .then((res) => {
+        // update mongodb doc with avatar path
+        const resPatch = await this.$http.patch('/users/me', { avatarPath: key });
+        const { avatarPath } = resPatch.data;
+
+        // update store
+        this.$store.dispatch('updateAvatarPath', avatarPath)
+          .then((data) => {
             this.isLoading = false;
             this.doShow = false;
-
-            this.avatarPath += ('?' + new Date().getTime());
 
             this.updateSnackbar({ title: `"${this.file.name}" uploaded.`, doShow: true });
             this.$refs.form.reset();
           })
           .catch((err) => {
-            alert(err);
+            window.alert(`invalid avatar upload ${err.message}`);
           });
       }
     },
