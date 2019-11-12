@@ -101,12 +101,8 @@ export default new Vuex.Store({
             user.id = _id;
             delete user.password;
 
-            // set secure to true when deploying to an https environment
-            // const opts = { expires: 1, samesite: 'Strict', secure: true };
-            const opts = { expires: 1, samesite: 'Strict' };
-
-            Cookies.set('token', token, opts);
-            Cookies.set('user', JSON.stringify(user), opts);
+            Cookies.set('token', token, optsCookie);
+            Cookies.set('user', JSON.stringify(user), optsCookie);
 
             this.$http.defaults.headers.common.Authorization = token;
 
@@ -128,8 +124,6 @@ export default new Vuex.Store({
             user.id = _id;
             user.avatarPath = avatarPath;
             delete user.password;
-
-            // const opts = { expires: 1, samesite: 'Strict' };
 
             Cookies.set('token', token, optsCookie);
             Cookies.set('user', JSON.stringify(user), optsCookie);
