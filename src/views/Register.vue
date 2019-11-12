@@ -1,127 +1,33 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card class="elevation-6">
-              <v-toolbar
-                color="googs"
-                dark
-                flat
-              >
-                <v-toolbar-title>Register</v-toolbar-title>
-              </v-toolbar>
-              <v-form
-                ref="form"
-              >
-                <v-card-text>
-                  <v-text-field
-                    v-model="name"
-                    label="Name"
-                    name="name"
-                    prepend-icon="mdi-account"
-                    type="text"
-                    :rules="rulesText"
-                  />
-                  <v-text-field
-                    v-model="email"
-                    label="E-Mail"
-                    name="email"
-                    prepend-icon="mdi-email"
-                    type="text"
-                    :rules="rulesText"
-                  />
-                  <v-text-field
-                    id="password"
-                    v-model="password"
-                    label="Password"
-                    name="password"
-                    :rules="rulesText"
-                    prepend-icon="mdi-lock"
-                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                    :type="showPassword ? 'text' : 'password'"
-                    @click:append="showPassword = !showPassword"
-                  />
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    text
-                    color="googs white--text"
-                    router
-                    to="/login"
-                  >
-                    <div class="mx-3">
-                      Login
-                    </div>
-                  </v-btn>
-                  <v-spacer />
-                  <v-btn
-                    rounded
-                    color="googs white--text"
-                    :loading="isLoading"
-                    @click.prevent="register"
-                  >
-                    <div class="mx-3">
-                      Register
-                    </div>
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <Authenticate
+    operation="register"
+    @register="doRegister"
+  />
 </template>
 
 <script>
+import Authenticate from '@/components/Authenticate';
+import { mapActions } from 'vuex';
+
 export default {
-  data () {
-    return {
-      name: '',
-      email: '',
-      password: '',
-      rulesText: [
-        v => !!v || 'required field'
-        // v => (v && v.length > 5) || 'value must be greater than 5 characters'
-      ],
-      isLoading: false,
-      showPassword: false
-    };
+  components: {
+    Authenticate
   },
   methods: {
-    register () {
-      if (this.$refs.form.validate()) {
-        this.isLoading = true;
+    doRegister (user) {
+      this.isLoading = true;
 
-        const user = {
-          name: this.name,
-          email: this.email,
-          password: this.password
-        };
-
-        this.$store.dispatch('register', user)
-          .then((data) => {
-            this.isLoading = false;
-            this.$router.push({ name: this.$route.params.redirectTo || 'Dashboard' });
-          })
-          .catch((err) => {
-            window.alert(`invalid registration ${err.message}`);
-          });
-      }
-    }
+      this.register(user)
+        .then((data) => {
+          this.isLoading = false;
+          this.$router.push({ name: this.$route.params.redirectTo || 'Dashboard' });
+        })
+        .catch((err) => {
+          window.alert(`invalid register ${err.message}`);
+        });
+    },
+    ...mapActions(['register'])
   }
+
 };
 </script>
